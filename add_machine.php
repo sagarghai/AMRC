@@ -22,7 +22,7 @@ if(empty($_POST["machine_name"]))
  require 'add_old_machine.php'; 
 ?>
 
-	 <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
+	<form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post">
 	<input type = "submit" name = "get_list" value = "GET LIST"><br>
 	<?php
 
@@ -33,11 +33,14 @@ if(empty($_POST["machine_name"]))
 		echo "<br>";
 	?>
 	</form>
-<form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post" id = "add_machine_form">
+<form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method = "post" id = "add_machine_form" enctype="multipart/form-data">
  Machine Name : <input type = "text" name = "machine_name">*Required Field<br>	
  Manufacturer : <input type = "text" name = "manufacturer"><br>
  Description : <br><textarea name = "machine_description" form = "machine_form" rows = "10" columns = "20"></textarea><br>
     
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+
 <input type = "submit" name = "machine_submit" value = "Add Machine">
 <?php
 require 'connect_db.php';
@@ -55,11 +58,16 @@ if(mysqli_num_rows($check_result) != 0)
 }
 else
 {
+	print_r($_FILE);
 	$insert = "insert into machine values (0,'$machine_name','$manufacturer','$machine_description');";
 	$insert_result = mysqli_query($connection,$insert);
 	if($insert_result)
+	{
 		echo "Machine Added to The Database";
+		 require 'upload.php';
+	}
 	else echo "Could not add machine";
+		
 }
 
 
@@ -68,13 +76,6 @@ else
 
 ?>
 </form>
-
-	<form action="upload.php" method="post" enctype="multipart/form-data">
-	Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
-	</form>
-
 
  </body>
 </html>
