@@ -1,12 +1,12 @@
 <?php
 $target_dir = "/var/www/html/uploads/";
-$target_file = $machine_name.$target_dir  ;
-echo $target_file;
+$target_file = $target_dir . basename( $_FILES["fileToUpload"]["name"]);
 if($target_file == $target_dir)
 {
     echo "no image uploaded";
     die();
 }
+$target_file = $target_dir . $machine_name;
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
